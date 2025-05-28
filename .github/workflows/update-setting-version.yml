@@ -1,0 +1,40 @@
+name: Update settings.json on Tag
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  update-version:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12.4'
+
+      - name: Extract version from tag
+        id: extract_version
+        run: echo "version=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+
+      - name: Install jq
+        run: sudo apt-get update && sudo apt-get install -y jq
+
+      - name: Update settings.json
+        run: |
+          VERSION=${{ steps.extract_version.outputs.version }}
+          echo "Updating settings.json with version $VERSION"
+          jq --arg version "$VERSION" '.version = $version' settings.json > tmp.json && mv tmp.json settings.json
+
+      - name: Commit and push updated settings.json
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add settings.json
+          git commit -m "chore: update settings.json version to $VERSION"
+          git push

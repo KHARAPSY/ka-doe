@@ -9,8 +9,6 @@ RUN apt-get update && \
     libmagic1 \
     && rm -rf var/lib/apt/lists/*
 
-COPY ../nginx.conf /etc/nginx/nginx.conf
-
 WORKDIR /app
 
 COPY ../api ./api
