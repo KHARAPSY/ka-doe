@@ -12,9 +12,10 @@ permissions:
 jobs:
   release:
     runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.RELEASE_PLEASE_TOKEN }}
     steps:
       - uses: actions/checkout@v3
-
       - uses: googleapis/release-please-action@v4
         with:
           release-type: python
