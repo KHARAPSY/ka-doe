@@ -1,0 +1,76 @@
+site_name: Ka-Doe
+
+nav:
+  - Home: index.md
+  - Getting Started:
+      - Overview: getting-started.md
+  - About: about.md
+  - API Reference:
+      - Introduction: api-intro.md
+      - Endpoints: endpoints.md
+  - Developer Guide:
+      - Project Structure: project-structure.md
+      - Configuration: config.md
+
+repo_url: https://github.com/KHARAPSY/ka-doe
+repo_name: KHARAPSY/ka-doe
+edit_uri: edit/main/docs/
+extra:
+  # version:
+  #   default: stable
+  #   provider: mike
+  # generator: false
+  social:
+    - icon: fontawesome/brands/x-twitter
+      link: https://x.com/KHARAPSY
+      name: Kharapsy on X
+copyright: Copyright &copy; 2025 Kharapsy
+
+theme:
+  name: material
+  features:
+    - header.autohide
+    - navigation.instant
+    - navigation.tabs
+    - navigation.sections
+    - navigation.footer
+    - search.highlight
+    - content.code.copy
+    - content.code.select
+    - content.action.edit
+    - toc.integrate
+  palette:
+
+    # Palette toggle for automatic mode
+    - media: "(prefers-color-scheme)"
+      toggle:
+        icon: material/brightness-auto
+        name: Switch to light mode
+
+    # Palette toggle for light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default 
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+
+    # Palette toggle for dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to system preference
+
+  icon:
+    repo: fontawesome/brands/github
+    # edit: material/pencil
+    # view: material/eye
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          setup_commands:
+            - import sys; sys.path.insert(0, "src")
+  - autorefs

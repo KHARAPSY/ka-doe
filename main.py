@@ -1,3 +1,4 @@
+import json
 from fastapi import FastAPI
 from api.routes import router as routers
 from api.loggings import setup_logger
@@ -5,7 +6,9 @@ from api.loggings import setup_logger
 logger = setup_logger(__name__)
 
 title = "Ka-Doe"
-version = "0.1.0"
+with open("settings.json") as f:
+    settings = json.load(f)
+version = settings.get("version", "0.0.0")
 
 app = FastAPI(
     title=title,

@@ -1,0 +1,20 @@
+services:
+  api-ka-doe:
+    build:
+      context: ..
+      dockerfile: dockers/Dockerfile
+    ports:
+      - "8094:8000"
+    volumes:
+      - ../api:/app/api
+      - ../main.py:/app/main.py
+      - ../requirements.txt:/app/requirements.txt
+      - ../settings.json:/app/settings.json
+      - ../LICENSE:/app/LICENSE
+    environment:
+      - TZ=$TIMEZONE
+    command: >
+      bash -c "
+        uvicorn main:app
+      "
+    restart: unless-stopped

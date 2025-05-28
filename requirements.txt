@@ -2,3 +2,7 @@ fastapi
 uvicorn
 git+https://github.com/suwalutions/PurrfectKit.git@meow
 python-multipart
+
+mkdocs
+mkdocs-material
+mkdocstrings[python]
