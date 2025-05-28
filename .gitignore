@@ -1,3 +1,7 @@
+logs/
+models_hf/
+tmp_dir/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
