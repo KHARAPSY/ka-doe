@@ -6,9 +6,7 @@ from api.loggings import setup_logger
 logger = setup_logger(__name__)
 
 title = "Ka-Doe"
-with open("settings.json") as f:
-    settings = json.load(f)
-version = settings.get("version", "0.0.0")
+version = "0.1.0"
 
 app = FastAPI(
     title=title,

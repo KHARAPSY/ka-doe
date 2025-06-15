@@ -7,7 +7,7 @@ def setup_logger(name: str = None) -> logging.Logger:
     Logs to both stdout and can be extended to file/remote sinks.
     """
     formatter = logging.Formatter(
-        fmt='[%(levelname)s] | %(asctime)s | %(name)s | %(message)s',
+        fmt='[%(asctime)s] | [%(name)s] | %(levelname)s | %(message)s',
         datefmt='%Y-%m-%d %H:%M:%S'
     )
 

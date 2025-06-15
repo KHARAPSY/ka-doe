@@ -4,8 +4,8 @@ from purrfectmeow import Suphalaks
 from fastapi import APIRouter
 from fastapi.concurrency import run_in_threadpool
 
-from ...models import ResponseTemplate
 from ...loggings import setup_logger
+from ...models.v1 import ResponseTemplate
 
 router = APIRouter()
 logger = setup_logger(__name__)

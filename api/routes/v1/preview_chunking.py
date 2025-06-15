@@ -1,38 +1,34 @@
 import time
-from purrfectmeow import Kornja
-from fastapi import APIRouter
-from fastapi.concurrency import run_in_threadpool
+from fastapi import APIRouter, Depends, UploadFile, File
 
-from ...models import ResponseTemplate
 from ...loggings import setup_logger
+from ...helpers.v1 import ChunkingProcessor
+from ...models.v1 import ResponseTemplate, PreviewChunkingForm, PreviewChunkingResponse
 
 router = APIRouter()
 logger = setup_logger(__name__)
 
 @router.post('/preview_chunking')
-async def preview_chunking(
-    text: str,
-    splitter: str,
-    embedding_model: str,
-    chunk_size: int,
-    chunk_overlap: int,
+def preview_chunking(
+    file: UploadFile = File(...),
+    request: PreviewChunkingForm = Depends()
 ):
     start = time.time()
-    logger.info(
-        f"Starting preview chunking using model='{embedding_model}', "
-        f"splitter='{splitter}', chunk_size={chunk_size}, chunk_overlap={chunk_overlap}."
-    )
+    
     try:
-        chunks = await run_in_threadpool(
-            Kornja.chunking,
-            text, 
-            splitter, 
-            kwargs={
-                "model_name": embedding_model,
-                "chunk_size": chunk_size,
-                "chunk_overlap": chunk_overlap
-            }
+        logger.info(
+            f"Received file '{file.filename}' for preview chunking "
+            f"with embedding model '{request.embedding_model}' "
+            f"with loader '{request.file_reader}' "
+            f"and extra params '{request.extra_params}'."
         )
+        chunks = ChunkingProcessor.process_preview(
+            file.file,
+            file.filename,
+            request.file_reader,
+            request.extra_params
+        )
+
         duration = time.time() - start
         logger.info(
             f"Successfully chunked preview text into {len(chunks)} chunks in {duration:.2f} seconds."
