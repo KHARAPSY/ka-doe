@@ -1,7 +1,9 @@
 from .response import ResponseTemplate
-from .preview_chunking import PreviewChunkingForm, PreviewChunkingResponse
+from .file_content import FileContentForm
+from .file_chunking import FileChunkingForm
 
 __all__ = [
     'ResponseTemplate',
-    'PreviewChunkingForm', 'PreviewChunkingResponse'
+    'FileContentForm',
+    'FileChunkingForm'
 ]
