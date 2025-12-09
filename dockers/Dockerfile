@@ -1,21 +1,21 @@
-FROM python:3.12.4
+FROM nvidia/cuda:12.6.1-devel-ubuntu22.04
+
+WORKDIR /ka-doe
+
+COPY . .
 
 RUN apt-get update && \
-    apt-get install --no-install-recommends -y \
-    tesseract-ocr \
-    tesseract-ocr-tha \
-    poppler-utils \
-    ffmpeg \
-    libmagic1 \
-    && rm -rf var/lib/apt/lists/*
-
-COPY ../nginx.conf /etc/nginx/nginx.conf
-
-WORKDIR /app
-
-COPY ../api ./api
-COPY ../main.py ./main.py
-COPY ../requirements.txt ./requirements.txt
-COPY ../settings.json ./settings.json
+    apt-get install -y \
+    python3 python3-pip \
+    python3-venv build-essential \
+    libbz2-dev libncurses5-dev \
+    libreadline-dev libssl-dev \
+    libsqlite3-dev tesseract-ocr \
+    tesseract-ocr-tha ffmpeg \
+    libmagic1 libxml2-dev \
+    libxslt1-dev libjpeg-dev && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
 RUN pip install --no-cache-dir -r requirements.txt
+
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]

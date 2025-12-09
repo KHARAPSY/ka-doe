@@ -1,0 +1,9 @@
+__pycache__
+.git
+.github
+.venv
+.vscode
+alembic
+dockers
+.gitignore
+alembic.ini

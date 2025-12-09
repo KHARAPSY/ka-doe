@@ -1,0 +1,25 @@
+import logging
+import sys
+
+def setup_logger(name: str = None) -> logging.Logger:
+    """
+    Sets up and returns a logger with a consistent format.
+    Logs to both stdout and can be extended to file/remote sinks.
+    """
+    formatter = logging.Formatter(
+        fmt='[%(levelname)s] | %(asctime)s | %(name)s | %(message)s',
+        datefmt='%Y-%m-%d %H:%M:%S'
+    )
+
+    handler = logging.StreamHandler(sys.stdout)
+    handler.setFormatter(formatter)
+    handler.setLevel(logging.DEBUG)
+
+    logger = logging.getLogger(name)
+    logger.setLevel(logging.DEBUG)
+
+    if not logger.handlers:
+        logger.addHandler(handler)
+
+    return logger
+

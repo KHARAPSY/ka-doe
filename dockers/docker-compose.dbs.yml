@@ -1,0 +1,69 @@
+services:
+  api:
+    depends_on:
+      - postgres
+      - mongo
+      - minio
+
+  postgres:
+    container_name: ka-doe_postgres
+    image: postgres
+    environment:
+      POSTGRES_USER: ${KADOE_POSTGRES_USER:-user}
+      POSTGRES_PASSWORD: ${KADOE_POSTGRES_PASS:-password}
+      POSTGRES_DB: ${KADOE_POSTGRES_DB:-ka_doe_db}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${KADOE_POSTGRES_USER:-user}"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 10s
+
+  mongo:
+    container_name: ka-doe_mongo
+    image: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${KADOE_MONGO_USER:-user}
+      MONGO_INITDB_ROOT_PASSWORD: ${KADOE_MONGO_PASS:-password}
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "mongo", "--host", "localhost", "--username", "$$ {KADOE_MONGO_USER:-user}", "--password", " $${KADOE_MONGO_PASS:-password}", "--authenticationDatabase", "admin", "--eval", "db.adminCommand('ping')"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 10s
+
+  minio:
+    container_name: ka-doe_minio
+    image: minio/minio
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${KADOE_MINIO_USER:-minioadmin}
+      MINIO_ROOT_PASSWORD: ${KADOE_MINIO_PASS:-minioadmin}
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio_data:/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 10s
+
+volumes:
+  postgres_data:
+  mongo_data:
+  minio_data:
+

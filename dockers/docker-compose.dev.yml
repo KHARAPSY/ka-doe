@@ -1,0 +1,6 @@
+services:
+  api:
+    volumes:
+      # Map local code to container for live reload
+      - ../app:/ka-doe/app
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload

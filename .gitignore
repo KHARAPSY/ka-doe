@@ -1,6 +1,7 @@
 logs/
 models_hf/
 tmp_dir/
+.vscode
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
